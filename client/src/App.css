@@ -14,9 +14,35 @@ html {
   display: none;
 }
 
+.chatBox {
+  transition: transform 1s ease-in-out;
+  animation: identifier 0.5s both;
+}
+
+
+@keyframes identifier {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+    width: 0px;
+  }
+
+  100% {
+    transform-origin: left;
+    transform: scale(1);
+    opacity: 1;
+    width: 800px;
+  }
+}
+
+
 @media screen and (min-width:768px) and (max-width:1024px) {
   .userBox {
     max-width: 200px;
+  }
+
+  .search {
+    min-width: 100px;
   }
 
   .userBox_me {
@@ -53,7 +79,7 @@ html {
 
 @media screen and (max-width: 767px) {
   .chatBox {
-    max-width: 400px;
+    min-width: 400px;
     transition: 1s;
     animation: identifier 0.5s both;
   }
@@ -64,7 +90,7 @@ html {
     }
 
     100% {
-      margin-right: 300px;
+      margin-right: 360px;
     }
   }
 
@@ -76,24 +102,8 @@ html {
     margin-top: -50px;
   }
 
-  .layout {
-    max-width: 800px;
-  }
-
   .userBox {
-    max-width: 400px;
-    transition: 1s;
-    animation: identifie 0.5s both;
-  }
-
-  @keyframes identifie {
-    0% {
-      margin-right: 0px;
-    }
-
-    100% {
-      margin-right: 0px;
-    }
+    min-width: 350px;
   }
 
   .userBox_me {
@@ -150,6 +160,34 @@ html {
     margin-top: 30px;
   }
 
+  .search {
+    margin-left: -30px;
+  }
+
+  .searchImg {
+    max-height: 50px;
+  }
+
+  .searchAddBtn {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    height: 30px;
+    width: 89px;
+    font-size: 10px;
+  }
+
+  .formSignup {
+    max-width: 400px;
+  }
+
+  .formSignin {
+    max-width: 400px;
+  }
+
+  .searchAdd {
+    margin-right: -51px;
+  }
 
 
 }

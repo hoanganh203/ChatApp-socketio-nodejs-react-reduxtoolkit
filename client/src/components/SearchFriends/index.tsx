@@ -51,13 +51,13 @@ const SearchFriends = () => {
 
     return (
         <div>
-            <div className="w-[800px] h-[610px] overflow-y-auto">
-                <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div className="search w-auto h-auto overflow-y-auto">
+                <div className="relative backdrop-blur-3xl backdrop-opacity-90 rounded-lg shadow dark:bg-gray-700">
                     <div className="px-6 py-4 border-b rounded-t dark:border-gray-600">
                         <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                         <div className="relative flex">
-                            <input type="search" onChange={valueInput} className="block w-full py-2 px-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeHolder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Friends" required />
-                            <button onClick={() => dispatch(isFriends(false))} className="text-3xl mx-2 my-2 hover:text-red-800"><GiCancel /></button>
+                            <input type="search" onChange={valueInput} className="bg-transparent text-white bg-none outline-none text-sm block w-full pl-10 p-2.5" placeholder="Tìm kiếm bạn bè ..." />
+                            <button onClick={() => dispatch(isFriends(false))} className="cancle text-3xl mx-2 my-2 hover:text-red-800"><GiCancel /></button>
                         </div>
                     </div>
                     <div className="p-6">
@@ -66,21 +66,21 @@ const SearchFriends = () => {
                                 return <div key={index}>
                                     {item._id !== User?._id && <>
                                         <li key={index}>
-                                            <div className="flex items-center justify-between p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-                                                <div className="flex items-center">
-                                                    <img src={item.images} alt="" className="w-16 h-16 rounded-full mx-4" />
-                                                    <p>{item.name}</p>
-                                                    <span className="absolute right-60">{
-                                                        usersOnline?.some((user: any) => user?.yourId === item._id) ? <>
-                                                            <p className="flex items-center">On <span className="text-green-600"><BsCircleFill /></span></p>
-                                                        </> : <>
-                                                            <p className="flex items-center">Off <span className="text-gray-500"><BsCircleFill /></span></p>
-                                                        </>
-                                                    }</span>
-                                                </div>
+                                            <div className="flex items-center justify-between p-3 text-base font-bold text-white rounded-lg cursor-pointer group">
+                                                <div className="searchImg flex items-center">
+                                                    <img src={item.images} alt="" className=" w-16 h-16 rounded-full mx-4" />
+                                                    <p className="searchName overflow-y-auto ml-2">{item.name}</p>
 
-                                                <div>
-                                                    <button className="mx-10 py-3 px-5 bg-slate-300 rounded-3xl hover:bg-gray-400" onClick={() => addFriend(item._id)}>Thêm bạn</button>
+                                                </div>
+                                                <span className="">{
+                                                    usersOnline?.some((user: any) => user?.yourId === item._id) ? <>
+                                                        <p className=" flex items-center">On <span className="text-green-600"><BsCircleFill /></span></p>
+                                                    </> : <>
+                                                        <p className="flex items-center">Off <span className="text-gray-500"><BsCircleFill /></span></p>
+                                                    </>
+                                                }</span>
+                                                <div className="searchAdd">
+                                                    <button className="searchAddBtn mx-10 py-3 px-5 bg-slate-50 text-black rounded-3xl hover:bg-gray-400" onClick={() => addFriend(item._id)}>Thêm bạn</button>
                                                 </div>
                                             </div>
                                         </li>

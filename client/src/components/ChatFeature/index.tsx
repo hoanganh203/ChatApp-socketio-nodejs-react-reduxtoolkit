@@ -10,13 +10,15 @@ import { isChatId } from "../../sliceRedux/chat.slice"
 
 
 const ChatFeature = () => {
-    const { receiver, usersOnline, chatId } = useSelector((state: RootState) => state.chat)
+    const { receiver, usersOnline } = useSelector((state: RootState) => state.chat)
     const dispatch = useAppDispatch()
     return (
         <div className="chatFeatureMobile">
             <div className=" flex items-center justify-between my-6">
+
+                <button onClick={() => dispatch(isChatId(null))} className="back w-20 text-2xl pl-4 -mr-1 text-white"><TbArrowBackUp /></button>
+
                 <div className="flex items-center mx-10">
-                    <button onClick={() => dispatch(isChatId(null))} className="back w-20 text-2xl -ml-1 text-white"><TbArrowBackUp /></button>
                     <img src={receiver?.images} className="receiverImg w-12 mr-3 sm:h-12 object-cover rounded-[50%] " alt="Ảnh đại diện" />
                     <span className="mt-7 -ml-3">{
                         usersOnline?.some((user: any) => user?.yourId === receiver?._id) ? <>

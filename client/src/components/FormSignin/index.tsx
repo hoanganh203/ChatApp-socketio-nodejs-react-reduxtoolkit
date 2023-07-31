@@ -79,7 +79,7 @@ const FormSignin = () => {
 
 
     return (
-        <div className="w-6/12 mx-auto bg-white p-10 mt-4 shadow-2xl">
+        <div className="formSignin w-[800px] mx-auto bg-white p-10 mt-4 shadow-2xl">
             <h1 className="text-center mt-10 text-3xl">Form Signin</h1>
             <form className="mt-9" onSubmit={handleSubmit(onSubmit)}>
                 <div className="relative z-0 w-full mb-9 group">

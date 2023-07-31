@@ -11,6 +11,7 @@ import UserItem from "../itemUser"
 import { getLastChid, getMessageApi } from "../../asyncThunk/chat"
 import { GrNotification } from "react-icons/gr"
 import moment from "moment"
+import { addFriend } from "../../api/auth"
 
 
 const UserList = () => {
@@ -136,7 +137,14 @@ const UserList = () => {
         dispatch(isGetReceiver(receiver))
         dispatch(getMessageApi(Friends._id))
         dispatch(isChatId(Friends))
+        dispatch(isFriends(false))
     }, [])
+
+
+    const adFriedns = () => {
+        dispatch(isFriends(true))
+        dispatch(isChatId(null))
+    }
 
 
     return (<>{
@@ -179,12 +187,11 @@ const UserList = () => {
                                     </>}
                                 </button>
                                 <button onClick={() => logOut()} className="logoutBlock  text-white my-2 ml-2 bg-red-700 hover:bg-white hover:text-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-[13px] px-2 py-1 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" >Đăng xuất</button>
-
                             </p>
                         </span>
                     </span>
                 </div>
-                <button className="float-right text-[30px] text-red-600 hover:text-white hover:scale-75 py-1" onClick={() => dispatch(isFriends(true))}><AiOutlineUsergroupAdd /></button>
+                <button className="float-right text-[30px] text-red-600 hover:text-white hover:scale-75 py-1" onClick={() => adFriedns()}><AiOutlineUsergroupAdd /></button>
                 <ul className="space-y-2 font-medium cursor-pointer ">
                     <p className="flex items-center justify-center text-white underline decoration-1">Danh sách Bạn bè</p>
                     {Friends.map((userChat: any, index: any) => {
