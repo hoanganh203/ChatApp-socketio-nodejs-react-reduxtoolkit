@@ -13,16 +13,15 @@ const socket = io("http://localhost:8080")
 const FormChat = () => {
     const { chatId, User, receiver, inputvalue } = useSelector((state: RootState) => state.chat)
     const dispatch = useAppDispatch()
-
     const sendMessage = () => {
         const newData = {
-            chatId: chatId._id,
+            chatId: chatId._id || chatId,
             senderId: User?._id,
             text: inputvalue,
         }
         dispatch(sendMessageApi(newData))
         if (receiver) {
-            socket.emit("sendMessage", { ...newData, receiver: receiver._id })
+            socket.emit("sendMessage", { ...newData, receiver: receiver._id || receiver.senderId })
         }
         return () => {
             socket.disconnect();

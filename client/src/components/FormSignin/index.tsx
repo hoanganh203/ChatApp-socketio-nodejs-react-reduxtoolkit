@@ -79,16 +79,16 @@ const FormSignin = () => {
 
 
     return (
-        <div className="formSignin w-[800px] mx-auto bg-white p-10 mt-4 shadow-2xl">
-            <h1 className="text-center mt-10 text-3xl">Form Signin</h1>
+        <div className="formSignin backdrop-blur-3xl backdrop-opacity-80 w-[800px] mx-auto p-10 mt-4 shadow-2xl">
+            <h1 className="text-center mt-10 text-white text-3xl">Form Signin</h1>
             <form className="mt-9" onSubmit={handleSubmit(onSubmit)}>
                 <div className="relative z-0 w-full mb-9 group">
-                    <input {...register('email')} type="email" onChange={(e) => setEmail(e.target.value)} className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-900 focus:outline-none focus:ring-0 focus:border-blue-100 peer" placeholder=" " required />
-                    <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-xl text-gray-900 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-0 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-900 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-9">Email address</label>
+                    <input {...register('email')} type="email" onChange={(e) => setEmail(e.target.value)} className="block py-2.5 px-0 w-full text-lg text-white  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-900 focus:outline-none focus:ring-0 focus:border-blue-100 peer" placeholder=" " required />
+                    <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-xl text-white  dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-0 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-900 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-9">Email address</label>
                 </div>
                 <div className="relative z-0 w-full mb-6 group">
-                    <input  {...register('password')} type="password" className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-900 focus:outline-none focus:ring-0 focus:border-blue-100 peer" placeholder=" " required />
-                    <label htmlFor="floating_password" className="peer-focus:font-medium absolute text-lg text-gray-900 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-0 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-900 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+                    <input  {...register('password')} type="password" className="block py-2.5 px-0 w-full text-lg text-white  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-900 focus:outline-none focus:ring-0 focus:border-blue-100 peer" placeholder=" " required />
+                    <label htmlFor="floating_password" className="peer-focus:font-medium absolute text-lg text-white  dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-0 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-900 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
                 </div>
                 {isLoading ? <>
                     <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-lg w-full sm:w-full px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -101,7 +101,7 @@ const FormSignin = () => {
                     </button>
                 </> : <>
                     <div className="flex my-4">
-                        <input type="text" {...register('verificationCode')} placeholder="Mã xác thực" className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-900 focus:outline-none focus:ring-0 focus:border-blue-100 peer" />
+                        <input type="text" {...register('verificationCode')} placeholder="Mã xác thực" className="block py-2.5 px-0 w-full text-lg text-white  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-900 focus:outline-none focus:ring-0 focus:border-blue-100 peer" />
                         {isLoading ? <>
                             <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-lg w-full sm:w-full px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <div role="status" className="mx-auto">
@@ -115,7 +115,6 @@ const FormSignin = () => {
                             {email ? <>
                                 <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-lg sm:w-full px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => onHandelCode()}>Gửi mã xác thực</button>
                             </> : <>
-                                <button disabled={!email} className="text-white bg-red-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-lg sm:w-full px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => onHandelCode()}>Gửi mã xác thực</button>
                             </>}
                         </>}
                     </div>

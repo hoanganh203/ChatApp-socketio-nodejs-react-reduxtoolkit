@@ -86,7 +86,6 @@ const chatSlice = createSlice({
         },
         addNotification: (state, action: PayloadAction<any>) => {
             state.notifications.push(action.payload);
-
         },
         isNotification: (state, action: PayloadAction<boolean>) => {
             state.isNotifications = action.payload
@@ -95,13 +94,7 @@ const chatSlice = createSlice({
                 return { ...notification, isRead: true }
             })
         }, oneChat: (state, action: PayloadAction<any>) => {
-            state.chatId = state.Friends.map((chat: any) => {
-                const chatMembers = [state.User?._id, action.payload.item?.senderId]
-                const isdesiredChat = chat?.members?.every((member: any) => {
-                    return chatMembers?.includes(member?._id)
-                })
-                return isdesiredChat
-            })
+            state.receiver = action.payload.item
             state.notifications = action.payload.notifications.map((el: any) => {
                 if (action.payload.item?.senderId === el.senderId) {
                     return { ...action.payload.item, isRead: true };
@@ -109,8 +102,14 @@ const chatSlice = createSlice({
                     return el
                 }
             })
-            console.log(state.notifications, "1");
-            console.log(state.chatId, "2");
+        }, oneChatUser: (state, action: PayloadAction<any>) => {
+            state.notifications = action.payload.notifications.map((n: any) => {
+                if (action.payload.item === n.senderId) {
+                    return { ...action.payload.item, isRead: true };
+                } else {
+                    return n
+                }
+            })
         }
     }, extraReducers(builder) {
         builder.addCase(signinApi.fulfilled, (state, action) => {
@@ -168,6 +167,6 @@ const chatSlice = createSlice({
     }
 })
 
-export const { isLoadingForm, islogin, oneChat, isFriends, allNotification, isNotification, searchFriends, isUsersOnline, isChatId, isGetReceiver, isSocketMessage, isStatusChatApp, isText, addNotification } = chatSlice.actions
+export const { isLoadingForm, islogin, oneChat, oneChatUser, isFriends, allNotification, isNotification, searchFriends, isUsersOnline, isChatId, isGetReceiver, isSocketMessage, isStatusChatApp, isText, addNotification } = chatSlice.actions
 const chatReducer = chatSlice.reducer
 export default chatReducer

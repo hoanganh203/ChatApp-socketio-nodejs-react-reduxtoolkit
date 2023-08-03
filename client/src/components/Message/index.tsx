@@ -7,10 +7,7 @@ import ItemMessage from "../itemMessage"
 const Message = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    const { User, receiver, chatId, Friends, messages, newMessages } = useSelector((state: RootState) => state.chat)
-    const dispatch = useAppDispatch()
-
-
+    const { messages } = useSelector((state: RootState) => state.chat)
 
     useEffect(() => {
         if (scrollRef.current !== null) {
@@ -21,13 +18,13 @@ const Message = () => {
 
     return (
         <>
-            <div className="overflow-y-auto h-[440px] messageMobile" ref={scrollRef}>
+            <div className="messageMobile overflow-y-auto h-[440px]" ref={scrollRef}>
                 {messages.map((message: any, index: any) => {
                     return <div key={index}>
                         <ItemMessage message={message} />
                     </div>
                 })}
-            </div>
+            </div >
         </>
 
     )

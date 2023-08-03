@@ -11,27 +11,26 @@ import UserItem from "../itemUser"
 import { getLastChid, getMessageApi } from "../../asyncThunk/chat"
 import { GrNotification } from "react-icons/gr"
 import moment from "moment"
-import { addFriend } from "../../api/auth"
 
 
 const UserList = () => {
     const navigate = useNavigate()
     const userId = localStorage.getItem("yourId")
     const dispatch = useAppDispatch()
-    const { User, Friends, chatId, newMessages, receiver, lastMessages, notifications, isNotifications } = useSelector((state: RootState) => state.chat)
+    const { User, Friends, chatId, newMessages, receiver, notifications, isNotifications, lastMessages } = useSelector((state: RootState) => state.chat)
     // const friend = Friends.map((a: any) => a.members.find((b: any) => b._id !== userId) || false)
     // const test = Friends.map((a:any)=>a.)
     // const thisUserNotifications = unreadNotifications?.filter((n) => n.senderId === )
     // console.log("thisUserNotifications", thisUserNotifications);
 
     const unreadnotifications = notifications.filter((n: any) => n.isRead === false)
-
     const modifiedNotifications = notifications.map((n: any) => {
         const sender = Friends.find((a: any) => a.members.find((b: any) => b._id === n.senderId))
         const sender1 = sender?.members.find((c: any) => c._id === n.senderId)
         return {
             ...n,
-            senderName: sender1?.name,
+            name: sender1?.name,
+            images: sender1?.images,
         }
     })
 
@@ -39,15 +38,15 @@ const UserList = () => {
         dispatch(allNotification())
     }
 
-    const markedNotificationsAsRead = useCallback((item: any, notifications: any, Friends: any) => {
-
+    const markedNotificationsAsRead = useCallback((item: any, notifications: any) => {
         const newData = {
-            items: item,
-            notifications: notifications
+            item: item,
+            notifications: notifications,
         }
-        console.log(newData);
-
+        updateChatIdTest(item.chatId)
         dispatch(oneChat(newData))
+        // const receiver = Friends?.members.find((member: any) => member._id !== userId)
+        // dispatch(isGetReceiver(receiver))
     }, [])
 
 
@@ -65,28 +64,29 @@ const UserList = () => {
 
         socket.on("getMessage", (res: any) => {
             if (socket === null) return
-            console.log(chatId);
-            console.log(chatId?._id, res.chatId);
-            if (chatId?._id === res.chatId) {
+            if (chatId?._id === res.chatId || chatId === res.chatId) {
                 console.log(res);
                 dispatch(isSocketMessage(res))
             } else {
-                console.log(1);
                 return
             }
         })
-
         socket.on("getNotification", (res: any) => {
-            const ischatOpen = Friends.some((a: any) => a.members.some((b: any) => b._id === res.senderId))
             const newData = {
                 chatId: res.chatId,
                 senderId: res.senderId,
                 isRead: false,
                 date: res.date,
             };
-            if (ischatOpen) {
-                dispatch(addNotification({ ...newData, isRead: true }));
-            } else {
+            if (receiver && chatId) {
+                const ischatOpen = receiver.senderId === res.senderId || receiver._id === res.senderId
+                if (ischatOpen) {
+                    dispatch(addNotification({ ...newData, isRead: true }));
+                } else {
+                    dispatch(addNotification(newData));
+                }
+            }
+            else {
                 dispatch(addNotification(newData));
             }
         })
@@ -103,9 +103,7 @@ const UserList = () => {
         };
     }, [dispatch, chatId, newMessages])
 
-    useEffect(() => {
 
-    }, [])
 
     const logOut = () => {
         const socket = io("http://localhost:8080")
@@ -132,6 +130,12 @@ const UserList = () => {
             socket.disconnect();
         };
     }
+
+    const updateChatIdTest = useCallback((chatId: any) => {
+        dispatch(isChatId(chatId))
+        dispatch(getMessageApi(chatId))
+    }, [])
+
     const updateChatId = useCallback((Friends: any) => {
         const receiver = Friends?.members.find((member: any) => member._id !== userId)
         dispatch(isGetReceiver(receiver))
@@ -146,34 +150,11 @@ const UserList = () => {
         dispatch(isChatId(null))
     }
 
+    const sortedNotifications = modifiedNotifications.sort((a, b) => moment(b.date).diff(moment(a.date)));
 
-    return (<>{
-        isNotifications && <>
-            <div className="userBox_me_notifi z-50 text-black bg-white shadow-2xl absolute ml-56 top-28 rounded-r-2xl rounded-bl-2xl opacity-60 h-[auto] overflow-y-auto">
-                <button onClick={() => markedNotifications()}>Đánh dấu đã đọc</button>
-                <div className="">
-                    <div className="mx-3 w-96">
-                        {modifiedNotifications?.length === 0 ? <span>
-                            Không có tin nhắn nào....
-                        </span> :
-                            null
-                        }
-                        <ul className="w-full">
-                            {modifiedNotifications && modifiedNotifications.map((item: any, index: any) => {
-                                return <div key={index} onClick={() => markedNotificationsAsRead(item, Friends, notifications)} className="cursor-pointer">
-                                    <li className="mx-2 my-4">
-                                        <span>{item.senderName} đã gửi tin nhắn đến bạn</span><br />
-                                        <span>{moment(item.data).calendar()}</span>
-                                    </li>
-                                    <hr />
-                                </div>
-                            })}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </>
-    }
+
+
+    return (<>
         <aside id="logo-sidebar" className="userBox z-30 w-[300px] -mt-7 shadow-2xl" aria-label="Sidebar">
             <div className="userBox_me h-[580px] px-3 py-4 backdrop-blur-3xl backdrop-opacity-90 dark:bg-gray-800 overflow-y-auto ">
                 <div className="flex items-center pl-2.5">
@@ -181,11 +162,45 @@ const UserList = () => {
                         <img src={User?.images} className="userBox_me_img w-12 mr-3 sm:h-12 object-cover rounded-[50%] " alt="Ảnh đại diện" />
                         <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
                             <p className="text-xl flex items-center text-white">{User?.name}
-                                <button className="ml-3" onClick={() => dispatch(isNotification(!isNotifications))}><GrNotification />
+                                <button className=" flex items-center justify-center mx-2" onClick={() => dispatch(isNotification(!isNotifications))}><GrNotification />
                                     {unreadnotifications?.length === 0 ? null : <>
-                                        <span className="text-2xl text-white">{unreadnotifications.length}</span>
+                                        <span className="text-xl text-white mx-2 bg-red-500 px-2.5 rounded-full">{unreadnotifications.length}</span>
                                     </>}
+                                    {
+                                        isNotifications && <>
+                                            <div className="userBox_me_notifi z-50 text-black bg-white shadow-2xl absolute left-1 top-16 rounded-2xl h-[auto] overflow-y-auto">
+                                                <button onClick={() => markedNotifications()}>Đánh dấu đã đọc</button>
+                                                <hr />
+                                                <div className="my-1">
+                                                    <div className="mx-3">
+                                                        {modifiedNotifications?.length === 0 ? <span>
+                                                            Không có tin nhắn nào....
+                                                        </span> :
+                                                            null
+                                                        }
+                                                        <ul className="">
+                                                            {sortedNotifications && sortedNotifications.map((item: any, index: any) => {
+                                                                return <div key={index} onClick={() => markedNotificationsAsRead(item, notifications)} className="cursor-pointer">
+                                                                    {item.isRead ? <li className="mx-2 text-start text-sm ">
+                                                                        <p className="">{item.name} đã gửi tin nhắn đến bạn</p>
+                                                                        <p>{moment(item.date).calendar()}</p>
+                                                                    </li> : <li className="mx-2 text-start text-sm bg-gray-300 px-3 -ml-1">
+                                                                        <p className="">{item.name} đã gửi tin nhắn đến bạn</p>
+                                                                        <p>{moment(item.date).calendar()}</p>
+                                                                    </li>}
+
+                                                                    <hr />
+                                                                </div>
+                                                            })}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    }
+
                                 </button>
+
                                 <button onClick={() => logOut()} className="logoutBlock  text-white my-2 ml-2 bg-red-700 hover:bg-white hover:text-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-[13px] px-2 py-1 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" >Đăng xuất</button>
                             </p>
                         </span>
@@ -198,7 +213,7 @@ const UserList = () => {
                         return <div key={index}>
                             <ul >
                                 <button onClick={() => updateChatId(userChat)} className="w-full">
-                                    <UserItem userChat={userChat} />
+                                    <UserItem userChat={userChat} lastMessages={lastMessages} />
                                 </button>
                             </ul>
 

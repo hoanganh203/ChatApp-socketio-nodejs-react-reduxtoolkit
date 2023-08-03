@@ -7,8 +7,6 @@ import UserList from '../../components/UserList'
 import { RootState } from '../../store'
 const Layout = () => {
     const { addFriends, chatId } = useSelector((state: RootState) => state.chat)
-    console.log(addFriends);
-
     return (
         <div className='layout mx-auto mt-20 flex items-center justify-center' >
             <UserList />
@@ -16,7 +14,7 @@ const Layout = () => {
                 <div className='chatBox w-[800px] -mt-7 h-[610px] shadow-2xl backdrop-blur-xl backdrop-opacity-0 rounded-lg dark:bg-gray-700'>
                     {addFriends && <SearchFriends />}
                 </div>}
-            {chatId && <div className='chatBox w-[800px] -mt-7 h-[610px] shadow-2xl backdrop-blur-xl backdrop-opacity-0 rounded-lg dark:bg-gray-700'>
+            {chatId && <div className='chatBox w-[800px] z-10 -mt-7 h-[610px] shadow-2xl backdrop-blur-xl backdrop-opacity-0 rounded-lg dark:bg-gray-700'>
                 {!addFriends && <ChatFeature />}
                 <hr />
                 {!addFriends && <Message />}

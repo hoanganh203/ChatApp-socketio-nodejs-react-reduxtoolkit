@@ -15,13 +15,12 @@ export const getMessageApi = createAsyncThunk(
 
 export const getLastChid = createAsyncThunk(
     'chat/getLastChid',
-    async (chatId: string) => {
+    async (chatId: any) => {
 
         try {
             const reponse = await getMessage(chatId)
             const last = reponse.data.message[reponse.data.message?.length - 1]
             console.log("last", last);
-
             return last
         } catch (error) {
             console.log(error);

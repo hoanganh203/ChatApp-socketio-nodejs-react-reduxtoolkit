@@ -27,6 +27,7 @@ export const startSocket = (server) => {
             io.emit("getUsersOnline", usersOnline)
         })
         socket.on("sendMessage", (message) => {
+            console.log(message);
             const user = usersOnline.find(user => user.yourId === message.receiver)
             console.log("user", user);
             if (user) {
