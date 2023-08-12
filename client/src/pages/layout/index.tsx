@@ -11,10 +11,10 @@ const Layout = () => {
         <div className='layout mx-auto mt-20 flex items-center justify-center' >
             <UserList />
             {addFriends &&
-                <div className='chatBox w-[800px] -mt-7 h-[610px] shadow-2xl backdrop-blur-xl backdrop-opacity-0 rounded-lg dark:bg-gray-700'>
+                <div id={addFriends ? "chatBox_ease" : "chatBox_out"} className='w-[800px] -mt-7 h-[610px] shadow-2xl backdrop-blur-xl backdrop-opacity-90 rounded-lg dark:bg-gray-700'>
                     {addFriends && <SearchFriends />}
                 </div>}
-            {chatId && <div className='chatBox w-[800px] z-10 -mt-7 h-[610px] shadow-2xl backdrop-blur-xl backdrop-opacity-0 rounded-lg dark:bg-gray-700'>
+            {chatId && <div className='chatBox w-[800px] z-10 -mt-10 h-[610px] shadow-2xl backdrop-blur-xl backdrop-opacity-90 rounded-lg dark:bg-gray-700'>
                 {!addFriends && <ChatFeature />}
                 <hr />
                 {!addFriends && <Message />}

@@ -2,24 +2,21 @@
 import { useForm } from "react-hook-form"
 import axios from 'axios'
 import { ISignup } from "../../interfaces/auth"
-import Swal from "sweetalert2"
 import { RootState, useAppDispatch } from "../../store"
 import { signupAPI } from "../../asyncThunk/user"
 import { useSelector } from "react-redux"
 import { isLoadingForm } from "../../sliceRedux/chat.slice"
 import { useNavigate } from "react-router-dom"
+import Notifications from "../Notifications"
 const FormSignup = () => {
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
-
     const isLoading = useSelector((state: RootState) => state.chat.isLoading)
-
     const { register, handleSubmit, formState: { } } = useForm<ISignup>({})
-
     const onSubmit = async (data: any) => {
+        const navigate = useNavigate()
         dispatch(isLoadingForm(true))
-        const file = data.images[0]; //Lấy ảnh từ form
         try {
+            const file = data.images[0]; //Lấy ảnh từ form
             // Upload ảnh lên Cloudinary
             const CLOUD_NAME = "doa7mkkpq";
             const PRESET_NAME = "upload";
@@ -43,21 +40,7 @@ const FormSignup = () => {
             dispatch(signupAPI(newData))
             navigate("/signin")
         } catch (error: any) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            Toast.fire({
-                icon: 'error',
-                title: error.message,
-            })
+            Notifications("error", error.message)
         }
     }
     return (

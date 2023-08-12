@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getMessage, sendMessage } from "../api/auth";
+import Notifications from "../components/Notifications";
 
 export const getMessageApi = createAsyncThunk(
     'chat/getMessage',
@@ -33,8 +34,11 @@ export const sendMessageApi = createAsyncThunk(
         try {
             const reponse = await sendMessage(newData)
             return reponse.data.response
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            Notifications("error", error)
+            if (error.response.data.message) {
+                Notifications("error", error.response.data.message)
+            }
         }
     }
 )

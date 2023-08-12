@@ -18,7 +18,8 @@ export interface ISignin {
 export interface IMesages {
     chatId: string,
     senderId: string,
-    text: string
+    text: string,
+    images: string
 }
 
 export interface IUser {
@@ -26,5 +27,6 @@ export interface IUser {
     name?: string,
     images?: string,
     status?: boolean;
-    members: any
+    members: any,
+    senderId: string
 }

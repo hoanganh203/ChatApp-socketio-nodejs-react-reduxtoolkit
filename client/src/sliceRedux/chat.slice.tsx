@@ -13,19 +13,19 @@ interface chatState {
     isLoading: boolean,
     User: IUser | null,
     login: boolean,
-    Friends: any[],
+    Friends: IUser[],
     addFriends: boolean,
     listUsers: IUser[] | null,
-    listUsersApi: any,
+    listUsersApi: IUser | null,
     search: string,
     usersOnline: any,
     chatId: any,
-    receiver: any,
+    receiver: IUser | null,
     messages: IMesages[],
     statusChatApp: boolean,
     inputvalue: string,
-    newMessages: any,
-    lastMessages: any[],
+    newMessages: IMesages | null,
+    lastMessages: IMesages[],
     notifications: any[],
     isNotifications: boolean
 }
@@ -103,11 +103,11 @@ const chatSlice = createSlice({
                 }
             })
         }, oneChatUser: (state, action: PayloadAction<any>) => {
-            state.notifications = action.payload.notifications.map((n: any) => {
-                if (action.payload.item === n.senderId) {
+            state.notifications = action.payload.notifications.map((item: any) => {
+                if (action.payload.item === item.senderId) {
                     return { ...action.payload.item, isRead: true };
                 } else {
-                    return n
+                    return item
                 }
             })
         }
@@ -133,17 +133,6 @@ const chatSlice = createSlice({
         }).addCase(getLastChid.fulfilled, (state, action) => {
             state.lastMessages.push(action.payload)
         })
-            // .addCase(getFriendsApi.fulfilled, (state, action) => {
-            //     state.Friends = action.payload
-            // }).addCase(getAllUsersApi.fulfilled, (state, action) => {
-            //     state.listUsersApi = action.payload
-            //     const list = action.payload
-            //     state.listUsers = list?.filter((user: any) => !state.Friends?.some(friend => friend._id === user._id));
-            // }).addCase(addFriendApi.fulfilled, (state, action) => {
-            //     state.Friends = action.payload
-            //     state.listUsers = state.listUsersApi?.filter((user: any) => !state.Friends?.some(friend => friend._id === user._id));
-
-            // })
             .addMatcher<PendingAction>( //lấy ra các trang thái bắt đầu hay kết thúc của action
                 (action) => action.type.endsWith('/pending'),
                 (state, action) => {

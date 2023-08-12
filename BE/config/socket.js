@@ -1,10 +1,5 @@
 import { Server } from 'socket.io';
 
-import User from '../models/User.js'
-import Messenger from '../models/userChat.js';
-
-
-
 export const startSocket = (server) => {
     /* socket */
     const io = new Server(server, {
@@ -17,7 +12,6 @@ export const startSocket = (server) => {
 
     let usersOnline = []
     io.on('connection', (socket) => {
-        console.log("connect", socket.id);
         socket.on("statusUsers", (yourId) => {
             !usersOnline.some(user => user.id === yourId) &&
                 usersOnline.push({
@@ -27,9 +21,7 @@ export const startSocket = (server) => {
             io.emit("getUsersOnline", usersOnline)
         })
         socket.on("sendMessage", (message) => {
-            console.log(message);
             const user = usersOnline.find(user => user.yourId === message.receiver)
-            console.log("user", user);
             if (user) {
                 console.log(message);
                 io.to(user?.socketId).emit("getMessage", message)
@@ -42,9 +34,7 @@ export const startSocket = (server) => {
 
             }
         })
-
         socket.on('disconnect', async () => {
-            console.log("disconnect", socket.id);
             usersOnline = usersOnline.filter(user => user.socketId !== socket.id)
             io.emit("getUsersOnline", usersOnline)
         });

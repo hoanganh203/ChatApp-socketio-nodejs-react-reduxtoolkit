@@ -8,6 +8,7 @@ import { useSelector } from "react-redux"
 import { isLoadingForm, islogin } from "../../sliceRedux/chat.slice"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import Notifications from "../Notifications"
 
 const FormSignin = () => {
     const [email, setEmail] = useState<any>()
@@ -24,52 +25,20 @@ const FormSignin = () => {
             }
             dispatch(checkCodeApi(newData))
         } catch (error: any) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            Toast.fire({
-                icon: 'error',
-                title: error.message,
-            })
+            Notifications("error", error.message)
         }
     }
-
-
-
 
     const onSubmit = (data: any) => {
         dispatch(isLoadingForm(true))
         try {
             dispatch(signinApi(data))
         } catch (error: any) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            Toast.fire({
-                icon: 'error',
-                title: error.message,
-            })
+            Notifications("error", error.message)
         }
     }
 
     const navigate = useNavigate()
-
     const yourId = localStorage.getItem('yourId')
     useEffect(() => {
         if (yourId) {
