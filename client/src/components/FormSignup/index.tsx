@@ -6,14 +6,12 @@ import { RootState, useAppDispatch } from "../../store"
 import { signupAPI } from "../../asyncThunk/user"
 import { useSelector } from "react-redux"
 import { isLoadingForm } from "../../sliceRedux/chat.slice"
-import { useNavigate } from "react-router-dom"
 import Notifications from "../Notifications"
 const FormSignup = () => {
     const dispatch = useAppDispatch()
     const isLoading = useSelector((state: RootState) => state.chat.isLoading)
     const { register, handleSubmit, formState: { } } = useForm<ISignup>({})
     const onSubmit = async (data: any) => {
-        const navigate = useNavigate()
         dispatch(isLoadingForm(true))
         try {
             const file = data.images[0]; //Lấy ảnh từ form
@@ -38,7 +36,6 @@ const FormSignup = () => {
                 images: response.data.secure_url // lấy link ảnh từ cloudinary trả về
             }
             dispatch(signupAPI(newData))
-            navigate("/signin")
         } catch (error: any) {
             Notifications("error", error.message)
         }

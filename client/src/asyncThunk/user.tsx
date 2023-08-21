@@ -4,8 +4,6 @@ import { SignupAuth, addFriend, checkCode, getAllUsers, getUser, getUserChats, s
 import { useAppDispatch } from "../store";
 import { isLoadingForm } from "../sliceRedux/chat.slice";
 import Notifications from "../components/Notifications";
-
-
 export const signupAPI = createAsyncThunk(
     'user/signup',
     async (body: ISignup) => {
