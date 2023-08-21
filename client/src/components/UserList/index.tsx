@@ -191,7 +191,7 @@ const UserList = () => {
                 <button className="float-right text-[30px] text-red-600 hover:text-white hover:scale-75 py-1" onClick={() => adFriedns()}><AiOutlineUsergroupAdd /></button>
                 <ul className="space-y-2 font-medium cursor-pointer ">
                     <p className="flex items-center justify-center text-white underline decoration-1">Danh sách Bạn bè</p>
-                    {Friends.map((userChat: any, index: any) => {
+                    {Friends ? Friends.map((userChat: any, index: any) => {
                         return <div key={index}>
                             <ul >
                                 <button onClick={() => updateChatId(userChat)} className="w-full">
@@ -200,7 +200,9 @@ const UserList = () => {
                             </ul>
 
                         </div>
-                    })}
+                    }) : <h1 className="text-2xl">Bạn bè rỗng</h1>}
+
+
                 </ul>
             </div>
             <button onClick={() => logOut()} className="logoutNone text-white my-2 ml-2 bg-red-700 hover:bg-white hover:text-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-[13px] px-2 py-1 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" >Đăng xuất</button>

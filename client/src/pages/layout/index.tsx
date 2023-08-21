@@ -5,8 +5,15 @@ import Message from '../../components/Message'
 import SearchFriends from '../../components/SearchFriends'
 import UserList from '../../components/UserList'
 import { RootState } from '../../store'
+import { useNavigate } from 'react-router-dom'
 const Layout = () => {
+    const navigate = useNavigate()
     const { addFriends, chatId } = useSelector((state: RootState) => state.chat)
+    const id = localStorage.getItem("yourId")
+
+    if (!id) {
+        navigate("/signin")
+    }
     return (
         <div className='layout mx-auto mt-20 flex items-center justify-center' >
             <UserList />
